@@ -68,31 +68,31 @@ class ExtensionsTest {
         assertEquals(10, routes[0].duration())
         assertEquals(12, routes[1].duration())
     }
-//
-//    @Test
-//    fun `does not offer routes with suspended lines`() {
-//
-//        var routes = map.routesFrom(southKensington, victoria)
-//
-//        assertEquals(2, routes.size)
-//        assertTrue(routes[0].segments.all { s -> s.line in setOf(piccadillyLine, victoriaLine) })
-//        assertTrue(routes[1].segments.all { s -> s.line == districtLine })
-//
-//        districtLine.suspend()
-//
-//        routes = map.routesFrom(southKensington, victoria)
-//
-//        assertEquals(1, routes.size)
-//        assertTrue(routes[0].segments.none { s -> s.line == districtLine })
-//
-//        districtLine.resume()
-//
-//        routes = map.routesFrom(southKensington, victoria)
-//
-//        assertEquals(2, routes.size)
-//        assertTrue(routes[0].segments.all { s -> s.line in setOf(piccadillyLine, victoriaLine) })
-//        assertTrue(routes[1].segments.all { s -> s.line == districtLine })
-//    }
+
+    @Test
+    fun `does not offer routes with suspended lines`() {
+
+        var routes = map.routesFrom(southKensington, victoria)
+
+        assertEquals(2, routes.size)
+        assertTrue(routes[0].segments.all { s -> s.line in setOf(piccadillyLine, victoriaLine) })
+        assertTrue(routes[1].segments.all { s -> s.line == districtLine })
+
+        districtLine.suspend()
+
+        routes = map.routesFrom(southKensington, victoria)
+
+        assertEquals(1, routes.size)
+        assertTrue(routes[0].segments.none { s -> s.line == districtLine })
+
+        districtLine.resume()
+
+        routes = map.routesFrom(southKensington, victoria)
+
+        assertEquals(2, routes.size)
+        assertTrue(routes[0].segments.all { s -> s.line in setOf(piccadillyLine, victoriaLine) })
+        assertTrue(routes[1].segments.all { s -> s.line == districtLine })
+    }
 //
 //    @Test
 //    fun `avoids interchange at closed stations`() {

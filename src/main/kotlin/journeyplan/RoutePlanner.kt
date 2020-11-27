@@ -11,7 +11,19 @@ class Line (private val lineName: String) {
     override fun toString(): String {
         return "$lineName Line"
     }
+    var state = "normal"
+    fun suspend(): String {
+        state = "suspended"
+        return state
+    }
+
+    fun resume(): String {
+        state = "normal"
+        return state
+    }
+
 }
+
 
 class Segment (val station1:Station, val station2:Station, val line:Line, val time:Int) {
 
@@ -25,7 +37,7 @@ class SubwayMap (val map:List<Segment>) {
         if (origin == destination) {
             return listOf(Route(emptyList()))
         }
-        val segments = map.filter { x -> x.station1 == origin && x.station2 !in visitedStations }
+        val segments = map.filter { x -> x.station1 == origin && x.station2 !in visitedStations && x.line.state != "suspended"}
 
         return segments.flatMap { segment -> helper(segment.station2, destination, visitedStations.plus(origin)).map {Route (listOf(segment) + it.segments)}}
     }
