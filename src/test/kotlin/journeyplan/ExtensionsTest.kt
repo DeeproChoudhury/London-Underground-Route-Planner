@@ -1,10 +1,10 @@
 package journeyplan
 
- import org.junit.Assert.assertEquals
- import org.junit.Assert.assertNotNull
- import org.junit.Assert.assertNull
- import org.junit.Assert.assertTrue
- import org.junit.Test
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
+import org.junit.Test
 
 class ExtensionsTest {
 
@@ -93,21 +93,21 @@ class ExtensionsTest {
         assertTrue(routes[0].segments.all { s -> s.line in setOf(piccadillyLine, victoriaLine) })
         assertTrue(routes[1].segments.all { s -> s.line == districtLine })
     }
-//
-//    @Test
-//    fun `avoids interchange at closed stations`() {
-//
-//        var routes = map.routesFrom(southKensington, oxfordCircus)
-//        assertEquals(2, routes.size)
-//
-//        victoria.close()
-//
-//        routes = map.routesFrom(southKensington, oxfordCircus)
-//
-//        assertEquals(1, routes.size)
-//        assertDoesNotGoVia(victoria, routes[0])
-//    }
-//
+
+    @Test
+    fun `avoids interchange at closed stations`() {
+
+        var routes = map.routesFrom(southKensington, oxfordCircus)
+        assertEquals(2, routes.size)
+
+        victoria.close()
+
+        routes = map.routesFrom(southKensington, oxfordCircus)
+
+        assertEquals(1, routes.size)
+        assertDoesNotGoVia(victoria, routes[0])
+    }
+
 //    @Test
 //    fun `does not avoid closed stations if interchange not required`() {
 //
@@ -122,14 +122,14 @@ class ExtensionsTest {
 //
 //        assertGoesVia(sloaneSquare, routes[1])
 //    }
-//
-//    private fun assertGoesVia(station: Station, route: Route) {
-//        assertNotNull(findIn(route, station))
-//    }
-//
-//    private fun assertDoesNotGoVia(station: Station, route: Route) {
-//        assertNull(findIn(route, station))
-//    }
-//
-//    private fun findIn(route: Route, station: Station) = route.segments.find { s -> s.to == station }
+
+    private fun assertGoesVia(station: Station, route: Route) {
+        assertNotNull(findIn(route, station))
+    }
+
+    private fun assertDoesNotGoVia(station: Station, route: Route) {
+        assertNull(findIn(route, station))
+    }
+
+    private fun findIn(route: Route, station: Station) = route.segments.find { s -> s.to == station }
 }

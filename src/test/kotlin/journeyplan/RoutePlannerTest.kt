@@ -1,7 +1,7 @@
 package journeyplan
 
- import org.junit.Test
- import kotlin.test.assertEquals
+import org.junit.Test
+import kotlin.test.assertEquals
 
 class RoutePlannerTest {
 
@@ -69,7 +69,9 @@ class RoutePlannerTest {
             """
                 Tufnell Park to Highgate - 6 minutes, 0 changes
                  - Tufnell Park to Highgate by Northern Line
-            """.trimIndent(), tufnellParkToHighgate.toString())
+            """.trimIndent(),
+            tufnellParkToHighgate.toString()
+        )
     }
 
     @Test
@@ -79,6 +81,8 @@ class RoutePlannerTest {
                 Highgate to Oxford Circus - 18 minutes, 1 changes
                  - Highgate to Euston by Northern Line
                  - Euston to Oxford Circus by Victoria Line
-            """.trimIndent(), highgateToOxfordCircus.toString())
+            """.trimIndent(),
+            highgateToOxfordCircus.toString()
+        )
     }
 }

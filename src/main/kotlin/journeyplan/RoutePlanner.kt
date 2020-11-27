@@ -1,13 +1,24 @@
 package journeyplan
 
 // Add your code for the route planner in this file.
-class Station (private val name:String) {
+class Station(private val name: String) {
     override fun toString(): String {
         return name
     }
+    var state = "open"
+
+    fun close(): String {
+        state = "closed"
+        return state
+    }
+
+    fun open(): String {
+        state = "open"
+        return state
+    }
 }
 
-class Line (private val lineName: String) {
+class Line(private val lineName: String) {
     override fun toString(): String {
         return "$lineName Line"
     }
@@ -21,14 +32,10 @@ class Line (private val lineName: String) {
         state = "normal"
         return state
     }
-
 }
 
-
-class Segment (val station1:Station, val station2:Station, val line:Line, val time:Int) {
-
-}
-class SubwayMap (val map:List<Segment>) {
+class Segment(val station1: Station, val to: Station, val line: Line, val time: Int)
+class SubwayMap(val map: List<Segment>) {
     fun routesFrom(origin: Station, destination: Station, optimisingFor: (Route) -> Int = Route :: duration): List<Route> {
         val listRoutes = helper(origin, destination, emptySet())
         return listRoutes.sortedBy(optimisingFor)
@@ -37,14 +44,11 @@ class SubwayMap (val map:List<Segment>) {
         if (origin == destination) {
             return listOf(Route(emptyList()))
         }
-        val segments = map.filter { x -> x.station1 == origin && x.station2 !in visitedStations && x.line.state != "suspended"}
+        var segments = map.filter { x -> x.station1 == origin && x.to !in visitedStations && x.to.state == "open" && x.line.state != "suspended" }
 
-        return segments.flatMap { segment -> helper(segment.station2, destination, visitedStations.plus(origin)).map {Route (listOf(segment) + it.segments)}}
+        return segments.flatMap { segment -> helper(segment.to, destination, visitedStations.plus(origin)).map { Route(listOf(segment) + it.segments) } }
     }
-
 }
-
-
 
 fun londonUnderground(): SubwayMap {
     val actonT = Station("Acton Town")
@@ -76,7 +80,8 @@ fun londonUnderground(): SubwayMap {
     val piccadillyLine = Line("Piccadilly")
     val districtLine = Line("District")
 
-    var subwaymap = SubwayMap(listOf(
+    var subwaymap = SubwayMap(
+        listOf(
             Segment(highgate, camden, northernLine, 3),
             Segment(knightsbridge, hydeParkCorner, piccadillyLine, 4),
             Segment(hydeParkCorner, greenPark, piccadillyLine, 2),
@@ -91,13 +96,12 @@ fun londonUnderground(): SubwayMap {
     )
     println(subwaymap.routesFrom(victoria, greenPark).first())
     return subwaymap
-
 }
 
 class Route(val segments: List<Segment>) {
     override fun toString(): String {
-        val sb = StringBuilder ()
-        sb.append("${segments.first().station1} to ${segments.last().station2} - ${duration()} minutes, ${numChanges()} changes\n")
+        val sb = StringBuilder()
+        sb.append("${segments.first().station1} to ${segments.last().to} - ${duration()} minutes, ${numChanges()} changes\n")
         var currentLine = segments.first().line
         sb.append(" - ${segments.first().station1} to ")
         for (segment in segments) {
@@ -107,26 +111,20 @@ class Route(val segments: List<Segment>) {
                 currentLine = segment.line
             }
         }
-        sb.append("${segments.last().station2} by $currentLine")
+        sb.append("${segments.last().to} by $currentLine")
         return sb.toString()
     }
 
-    fun duration () : Int {
-        return segments.map {it.time}.sum()
+    fun duration(): Int {
+        return segments.map { it.time }.sum()
     }
 
-    fun numChanges (): Int {
+    fun numChanges(): Int {
         return segments.zipWithNext().filter { (x, y) -> x.line != y.line }.size
     }
 }
 
-fun main () {
-
+fun main() {
 
     londonUnderground()
-
-
-
-
-
 }
