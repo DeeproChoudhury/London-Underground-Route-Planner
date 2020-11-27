@@ -27,7 +27,6 @@ class SubwayMap (val map:List<Segment>) {
         }
         val segments = map.filter { x -> x.station1 == origin && x.station2 !in visitedStations }
 
-        //return segments.flatMap { segment -> listOf(Route(listOf(segment))).plus(helper(segment.station2, destination, visitedStations.plus(origin)))}
         return segments.flatMap { segment -> helper(segment.station2, destination, visitedStations.plus(origin)).map {Route (listOf(segment) + it.segments)}}
     }
 
@@ -112,7 +111,7 @@ class Route(val segments: List<Segment>) {
 fun main () {
 
 
-    val map = londonUnderground()
+    londonUnderground()
 
 
 
